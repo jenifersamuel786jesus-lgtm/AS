@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { FarmerDashboard } from './components/farmer/FarmerDashboard';
 import { PreSowingAdvisory } from './components/farmer/PreSowingAdvisory';
+import { DuringCropSupport } from './components/farmer/DuringCropSupport';
 import { MandiExplorer } from './components/farmer/MandiExplorer';
 import { ProfitCalculator } from './components/farmer/ProfitCalculator';
 import { PostHarvestPlanner } from './components/farmer/PostHarvestPlanner';
@@ -9,16 +10,15 @@ import { PriceForecastModule } from './components/farmer/PriceForecastModule';
 import { CrashRiskAdvisory } from './components/farmer/CrashRiskAdvisory';
 import { AdminPortal } from './components/admin/AdminPortal';
 import { LoginModal } from './components/auth/LoginModal';
+import { ProfileModal } from './components/auth/ProfileModal';
 import { Language, UserRole, UserProfile } from './types';
 import { DEFAULT_FARMER_USER } from './data/authUsers';
 import {
   Sprout,
   PhoneCall,
   ShieldCheck,
-  ShieldAlert,
   Lock,
   ArrowRight,
-  UserCheck,
 } from 'lucide-react';
 
 export default function App() {
@@ -45,10 +45,11 @@ export default function App() {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [selectedMandiId, setSelectedMandiId] = useState<string>('oddanchatram');
 
-  // Auth Modal State
+  // Auth & Profile Modal State
   const [loginModalOpen, setLoginModalOpen] = useState<boolean>(false);
   const [loginModalRole, setLoginModalRole] = useState<'farmer' | 'admin'>('farmer');
   const [unauthorizedMsg, setUnauthorizedMsg] = useState<string | null>(null);
+  const [profileModalOpen, setProfileModalOpen] = useState<boolean>(false);
 
   useEffect(() => {
     localStorage.setItem('agrishield_lang', language);
@@ -72,6 +73,11 @@ export default function App() {
     setUnauthorizedMsg(null);
   };
 
+  const handleUpdateUser = (updatedUser: UserProfile) => {
+    setCurrentUser(updatedUser);
+    localStorage.setItem('agrishield_user', JSON.stringify(updatedUser));
+  };
+
   const handleLogout = () => {
     setCurrentUser(null);
     localStorage.removeItem('agrishield_user');
@@ -91,6 +97,7 @@ export default function App() {
         setActiveTab={setActiveTab}
         currentUser={currentUser}
         onOpenLogin={handleOpenLogin}
+        onOpenProfile={() => setProfileModalOpen(true)}
         onLogout={handleLogout}
       />
 
@@ -173,6 +180,10 @@ export default function App() {
               <PreSowingAdvisory language={language} />
             )}
 
+            {activeTab === 'during_crop' && (
+              <DuringCropSupport language={language} />
+            )}
+
             {activeTab === 'mandi' && (
               <MandiExplorer
                 language={language}
@@ -218,6 +229,17 @@ export default function App() {
         initialRole={loginModalRole}
         unauthorizedMessage={unauthorizedMsg}
       />
+
+      {/* Profile & Farm Settings Modal */}
+      {currentUser && (
+        <ProfileModal
+          isOpen={profileModalOpen}
+          onClose={() => setProfileModalOpen(false)}
+          language={language}
+          user={currentUser}
+          onUpdateUser={handleUpdateUser}
+        />
+      )}
 
       {/* Trust & Transparency Footer */}
       <footer className="bg-stone-900 text-stone-300 border-t border-stone-800 text-xs py-8 mt-auto">
@@ -279,7 +301,7 @@ export default function App() {
               © 2026 AgriShield Platform. Built for Indian Agriculture & Farmer Welfare.
             </div>
             <div>
-              Version 1.2.0 • Role-Protected Authentication
+              Version 1.2.0 • Full-Stack Production Ready
             </div>
           </div>
         </div>

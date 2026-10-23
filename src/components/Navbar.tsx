@@ -15,6 +15,8 @@ import {
   User,
   Shield,
   Layers,
+  CloudRain,
+  Edit3,
 } from 'lucide-react';
 import { Language, UserRole, UserProfile } from '../types';
 import { t } from '../utils/translations';
@@ -28,6 +30,7 @@ interface NavbarProps {
   setActiveTab: (tab: string) => void;
   currentUser: UserProfile | null;
   onOpenLogin: (role?: 'farmer' | 'admin', message?: string) => void;
+  onOpenProfile: () => void;
   onLogout: () => void;
 }
 
@@ -40,6 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveTab,
   currentUser,
   onOpenLogin,
+  onOpenProfile,
   onLogout,
 }) => {
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -234,6 +238,23 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
 
                     <div className="py-2 space-y-1">
+                      {currentUser.role !== 'admin' && (
+                        <button
+                          onClick={() => {
+                            setProfileDropdownOpen(false);
+                            onOpenProfile();
+                          }}
+                          className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-stone-100 flex items-center space-x-2 text-stone-700 font-medium transition"
+                        >
+                          <Edit3 className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>
+                            {language === 'ta'
+                              ? 'நில விவரங்கள் & ஆலோசனை வரலாறு'
+                              : 'Farm Details & Advisory History'}
+                          </span>
+                        </button>
+                      )}
+
                       <button
                         onClick={() => {
                           setProfileDropdownOpen(false);
@@ -310,6 +331,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {[
               { id: 'home', label: t(language, 'navHome'), icon: Sprout },
               { id: 'advisory', label: t(language, 'navAdvisory'), icon: CheckCircle2 },
+              { id: 'during_crop', label: language === 'ta' ? 'பயிர் மருத்துவர் & வானிலை' : 'Crop Doctor & Weather', icon: CloudRain },
               { id: 'mandi', label: t(language, 'navMandi'), icon: BarChart3 },
               { id: 'profit', label: t(language, 'navProfit'), icon: Building2 },
               { id: 'rescue', label: t(language, 'navRescue'), icon: ShieldAlert },

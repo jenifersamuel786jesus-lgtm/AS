@@ -2,6 +2,17 @@ export type Language = 'en' | 'ta';
 
 export type UserRole = 'farmer' | 'fpo' | 'admin';
 
+export interface AdvisoryHistoryItem {
+  id: string;
+  timestamp: string;
+  type: 'pre_sowing' | 'price_alert' | 'rescue_plan' | 'crop_doctor';
+  title: string;
+  titleTa: string;
+  detail: string;
+  detailTa: string;
+  cropName: string;
+}
+
 export interface UserProfile {
   id: string;
   name: string;
@@ -11,17 +22,27 @@ export interface UserProfile {
   district: string;
   districtTa: string;
   state: string;
+  taluk?: string;
+  talukTa?: string;
   phone?: string;
   email?: string;
   landArea?: number;
+  soilType?: string;
+  soilTypeTa?: string;
+  irrigationType?: string;
+  irrigationTypeTa?: string;
   primaryCrop?: string;
   primaryCropTa?: string;
+  savedCrops?: string[];
+  smsAlertsEnabled?: boolean;
+  whatsappAlertsEnabled?: boolean;
   designation?: string;
   designationTa?: string;
   department?: string;
   departmentTa?: string;
   clearanceLevel?: string;
   lastLogin?: string;
+  advisoryHistory?: AdvisoryHistoryItem[];
 }
 
 export interface Crop {
@@ -193,4 +214,62 @@ export interface PostHarvestOption {
   recommendationRating: 'Best Value' | 'Moderate' | 'High Risk';
   requiredVerifications: string[];
   requiredVerificationsTa: string[];
+}
+
+export interface WeatherPoint {
+  date: string;
+  dayOfWeek: string;
+  dayOfWeekTa: string;
+  tempMax: number;
+  tempMin: number;
+  condition: string;
+  conditionTa: string;
+  rainfallChancePct: number;
+  humidityPct: number;
+  windSpeedKmh: number;
+  alertMsg?: string;
+  alertMsgTa?: string;
+}
+
+export interface CropStageGuidance {
+  stageNumber: number;
+  stageName: string;
+  stageNameTa: string;
+  dayRange: string;
+  waterNeeds: 'High' | 'Moderate' | 'Critical' | 'Low';
+  waterAdvice: string;
+  waterAdviceTa: string;
+  fertilizerAdvice: string;
+  fertilizerAdviceTa: string;
+  risksAndPests: string;
+  risksAndPestsTa: string;
+}
+
+export interface PestDiagnosticItem {
+  id: string;
+  cropId: string;
+  cropName: string;
+  pestName: string;
+  pestNameTa: string;
+  scientificName: string;
+  symptoms: string[];
+  symptomsTa: string[];
+  organicRemedy: string;
+  organicRemedyTa: string;
+  chemicalRemedy: string;
+  chemicalRemedyTa: string;
+  severity: 'LOW' | 'MEDIUM' | 'HIGH';
+  photoPrompt?: string;
+}
+
+export interface KvkCenter {
+  district: string;
+  districtTa: string;
+  centerName: string;
+  centerNameTa: string;
+  phone: string;
+  email: string;
+  scientistInCharge: string;
+  address: string;
+  addressTa: string;
 }
