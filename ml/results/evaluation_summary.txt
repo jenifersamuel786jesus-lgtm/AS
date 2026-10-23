@@ -1,0 +1,26 @@
+============================================================
+AGRISHIELD MODEL EVALUATION
+============================================================
+
+Regression:
+MAE: ₹116.95 per quintal
+RMSE: ₹322.57 per quintal
+R²: 0.9857
+MAPE: 3.02%
+
+Classification:
+Accuracy: 95.65%
+Precision: 53.33%
+Recall: 24.24%
+F1-score: 0.3333
+ROC-AUC: 0.7095995517048148
+PR-AUC: 0.19467402661905298
+
+Dataset: Agmarknet Historical Market Series + Government Benchmarks
+Training period: 2024-01-01 to 2026-01-23
+Testing period: 2026-01-24 to 2026-03-24
+Selected model: Linear_Regression / Gradient_Boosting_Classifier
+
+Crash Definition: Future modal price decline >= 20% within 7 days.
+Evaluation Strategy: Strict chronological out-of-time test partition (zero data leakage).
+============================================================

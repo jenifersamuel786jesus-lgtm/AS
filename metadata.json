@@ -1,0 +1,6 @@
+{
+  "name": "AgriShield - AI Farmer Price Crash Predictor",
+  "description": "AI-powered agricultural market price crash prediction and early warning system for farmers, FPOs, and agricultural planners.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

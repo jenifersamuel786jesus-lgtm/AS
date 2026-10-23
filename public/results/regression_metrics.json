@@ -1,0 +1,56 @@
+{
+  "model_name": "Gradient_Boosting_Regressor",
+  "model_version": "v1.2.0-production",
+  "evaluation_timestamp": "2026-09-19T10:14:16.301493Z",
+  "dataset_name": "Agmarknet Historical Market Series + Government Benchmarks",
+  "test_sample_count": 736,
+  "test_period": "2026-01-24 to 2026-03-24",
+  "mae": 116.21,
+  "rmse": 345.99,
+  "r2": 0.9836,
+  "mape_pct": 2.93,
+  "per_day_metrics": [
+    {
+      "horizon_day": 1,
+      "mae": 35.34,
+      "rmse": 81.34,
+      "r2": 0.9991
+    },
+    {
+      "horizon_day": 2,
+      "mae": 59.98,
+      "rmse": 158.27,
+      "r2": 0.9967
+    },
+    {
+      "horizon_day": 3,
+      "mae": 83.5,
+      "rmse": 236.22,
+      "r2": 0.9926
+    },
+    {
+      "horizon_day": 4,
+      "mae": 112.73,
+      "rmse": 314.2,
+      "r2": 0.9867
+    },
+    {
+      "horizon_day": 5,
+      "mae": 142.83,
+      "rmse": 393.92,
+      "r2": 0.9788
+    },
+    {
+      "horizon_day": 6,
+      "mae": 175.33,
+      "rmse": 467.81,
+      "r2": 0.9697
+    },
+    {
+      "horizon_day": 7,
+      "mae": 203.78,
+      "rmse": 527.02,
+      "r2": 0.9612
+    }
+  ]
+}

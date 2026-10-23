@@ -1,0 +1,710 @@
+MASTER DEVELOPMENT PROMPT — AGRISHIELD
+
+Complete Farmer-Centric AI Platform: UI/UX, Backend, Machine Learning, Market Intelligence, Security and Deployment
+
+1. Your Role
+
+Act as a senior full-stack engineer, UI/UX designer, machine-learning engineer, data engineer, agricultural technology specialist, security engineer and QA tester.
+
+Your task is to inspect, improve, test and complete my existing AgriShield project. Do not stop after creating a visually attractive dashboard. Deliver a working, integrated application with reliable data handling, usable farmer workflows, useful administration tools, explainable ML predictions and clear documentation.
+
+Project name: AgriShield
+
+Full title: AgriShield — AI-Powered Crop Market Intelligence, Pre-Sowing Advisory and Post-Harvest Rescue System
+
+Primary users: Indian farmers, especially small and marginal farmers, and authorized administrators.
+
+Technology direction: Python Flask backend, HTML/CSS/JavaScript, Bootstrap where appropriate, SQLite for local development, pandas, scikit-learn and joblib for ML, with optional external market-data integrations.
+
+Important constraints:
+
+- Work with the existing project and preserve useful functionality.
+- Keep the application affordable to run and suitable for a college project demonstration.
+- Do not require paid APIs, cloud accounts, payment cards or proprietary services for core local functionality.
+- Use real data when verified sources are configured; clearly identify demo data otherwise.
+- Do not fabricate market prices, model predictions, farmer records, API success or evaluation metrics.
+- Do not claim that AgriShield guarantees profits, prevents losses or replaces agricultural experts.
+
+---
+
+2. Phase One — Inspect the Entire Existing Project
+
+Before modifying code, inspect the full project structure, including:
+
+- Flask application entry point and configuration.
+- All routes, services and database models or queries.
+- HTML templates, shared layouts, navigation and forms.
+- CSS, JavaScript, Bootstrap components and chart libraries.
+- ML training, inference and evaluation modules.
+- Model artifact loading and feature preprocessing.
+- Database schema, initialization scripts and existing data.
+- API adapters and external service integrations.
+- Tests, environment variables, requirements and README.
+- Existing farmer and admin interfaces, if present.
+
+Create an internal implementation inventory that identifies:
+
+1. Features that already work.
+2. Features that are partially implemented.
+3. Broken or disconnected integrations.
+4. Missing functionality.
+5. Security and data-quality risks.
+6. Duplicate or unnecessary code.
+7. Tests needed to prove correctness.
+
+Do not assume a feature works simply because a button, chart or route exists.
+
+Run the existing tests and application before major changes. Record the baseline failures. Then implement changes in manageable stages, testing each stage before continuing.
+
+Do not delete working functionality or replace the entire project unnecessarily. Reuse the existing architecture wherever practical.
+
+---
+
+3. Build Two Separate, Role-Based Experiences
+
+Create a clear distinction between the Farmer Portal and Admin Portal. They may share components, design tokens and backend services, but their navigation, permissions and workflows must be appropriate to each role.
+
+A. Farmer Portal
+
+Design for a farmer who may have limited technical experience, use an entry-level Android phone, access the application on a slow connection and prefer Tamil over English.
+
+Farmer home dashboard
+
+The dashboard should immediately answer:
+
+- What can I do here?
+- Which crop information is available?
+- What are the latest verified local market prices?
+- What decisions can I compare?
+- When was the data last updated?
+
+Display four primary action cards prominently:
+
+1. Choose a Crop.
+2. Check Mandi Prices.
+3. Calculate Expected Profit.
+4. Plan After Harvest.
+
+Include a clear market-data freshness indicator, relevant crop information, useful shortcuts and an understandable explanation of how the displayed information can support a decision.
+
+Do not overload the farmer's first screen with technical charts, raw database information or ML terminology.
+
+Feature 1: Pre-Sowing Crop Advisory
+
+Allow farmers to enter:
+
+- State and district.
+- Preferred mandi or market, when available.
+- Land area and measurement unit.
+- Soil type, if known.
+- Irrigation availability.
+- Season and expected sowing period.
+- Available budget.
+- Preferred crop or crops to compare.
+
+Recommend crops only when sufficient relevant data and a valid recommendation method are available.
+
+Show a comparison of candidate crops using available evidence:
+
+- Verified historical or current market prices.
+- Expected yield and its source.
+- Estimated cultivation expenses.
+- Water or irrigation requirements, where reliable data exists.
+- Approximate gross revenue and net return.
+- Data coverage and uncertainty.
+- Important limitations and risks.
+
+Distinguish observed facts, user-provided estimates, agronomic estimates and model-generated predictions.
+
+Never recommend a crop solely because it had the highest historical price. Account for costs, yield, season, local suitability and the limitations of available data.
+
+If the information is insufficient, explain what is missing instead of generating a confident recommendation.
+
+Feature 2: Mandi Market Explorer
+
+Provide search and filtering by:
+
+- State, district and mandi.
+- Crop or commodity.
+- Date or available date range.
+- Minimum and maximum price.
+- Market or source.
+
+Show available minimum, maximum and modal prices with appropriate units, dates and source details.
+
+Provide:
+
+- A readable price history chart.
+- A table with sorting and filtering.
+- A latest-data timestamp.
+- A source link when available.
+- A visible warning for stale or incomplete data.
+- A distinction between verified data and demonstration data.
+
+Handle missing values and inconsistent commodity names without silently inventing or altering prices.
+
+Never describe sample CSV data as live market data.
+
+Feature 3: Price Forecasting
+
+Integrate trained price-forecasting models only when valid artifacts and compatible preprocessing are available.
+
+Allow a user to select a supported commodity, market and forecast horizon.
+
+Display:
+
+- Historical observations.
+- Forecast values.
+- Prediction intervals when supported by the model.
+- Model evaluation results and evaluation period.
+- Data coverage and forecast limitations.
+- A clear statement that the forecast is not a guarantee.
+
+Use time-based validation and compare the model against an appropriate simple baseline.
+
+Do not use random train/test splitting for time-series evaluation if it causes future information to leak into training.
+
+If the model is missing, the commodity is unsupported or the data is insufficient, display a clear unavailable state. Do not create fake forecasts.
+
+Feature 4: Price Crash-Risk Advisory
+
+Develop a price-risk classification workflow only when suitable historical training data and defensible labels are available.
+
+Show:
+
+- Risk category.
+- Estimated probability when calibrated and meaningful.
+- Forecast or observation date.
+- Main supporting factors, where explainable.
+- Model validation information.
+- Appropriate uncertainty and limitations.
+
+Define the meaning of a price crash explicitly and document the labeling process.
+
+Do not create arbitrary risk percentages or label a crop high-risk without a valid calculation.
+
+Alerts must be informative, not frightening. Explain that a warning is a decision-support signal rather than a certainty.
+
+Feature 5: Net-Earnings Calculator
+
+Allow farmers to enter or adjust:
+
+- Land area and unit.
+- Expected yield per unit.
+- Expected selling price.
+- Seeds, fertilizer and pesticide expenses.
+- Labour and machinery expenses.
+- Irrigation and electricity expenses.
+- Harvesting and packaging expenses.
+- Transport, storage, commission and other applicable costs.
+
+Calculate:
+
+- Total estimated cultivation and selling costs.
+- Expected gross revenue.
+- Estimated net earnings.
+- Cost per unit.
+- Break-even selling price.
+- Profit or loss under alternative selling prices.
+
+Make units consistent, validate numerical inputs and explain the calculation in plain language.
+
+Use explicit formulas in code and test them with known inputs. Mark user-entered estimates separately from verified values.
+
+Do not confuse gross revenue with profit.
+
+Feature 6: Post-Harvest Rescue Planner
+
+Help farmers compare available selling and storage scenarios:
+
+- Sell immediately.
+- Transport to another verified market.
+- Store temporarily, where storage is genuinely available.
+- Compare possible selling dates when reliable forecasts exist.
+- Compare transport and storage costs against potential price changes.
+
+Calculate scenario-based net returns, including costs, expected spoilage or quality loss when defensible estimates are available.
+
+Display required assumptions and explain which option produces the highest estimated return under those assumptions.
+
+Never claim that a warehouse, buyer, storage facility or transport service is available unless that availability has been verified.
+
+Where real listings are unavailable, provide a transparent scenario calculator rather than fictional business listings.
+
+Feature 7: Farmer-Friendly Guidance
+
+Use short sentences, familiar agricultural terminology, clear labels and helpful examples.
+
+For every recommendation, explain:
+
+- What the recommendation means.
+- Why it is being shown.
+- Which data supports it.
+- What the farmer should verify locally.
+- What could make the result inaccurate.
+
+Provide useful empty states, validation messages, loading indicators, retry options and understandable error messages.
+
+---
+
+B. Admin Portal
+
+Build a professional, data-focused administration interface with its own protected navigation.
+
+Admin overview
+
+Show verified operational metrics such as:
+
+- Number of registered users, if registration exists.
+- Available commodities and markets.
+- Latest successful data refresh.
+- Current data-source status.
+- Number of missing, stale or rejected records.
+- Available ML models and their status.
+- Recent failures and administrative activity.
+
+Do not display invented totals or static values disguised as live metrics.
+
+Data-source management
+
+Provide a clear view of configured sources and their status.
+
+Support, where compatible with the existing project:
+
+- Manual CSV import.
+- CSV schema and data validation.
+- Configured market API refresh.
+- Import history.
+- Error details and retry controls.
+- Source attribution and timestamps.
+- Duplicate detection.
+- Missing-value and outlier reports.
+- Data freshness monitoring.
+
+Require authorized access for administrative operations.
+
+Never expose API keys or credentials in the browser, logs or user-visible error messages.
+
+Do not report an import or refresh as successful until the operation has actually completed and its outcome has been checked.
+
+ML model management
+
+Provide visibility into:
+
+- Model name and version.
+- Training-data period.
+- Training and evaluation status.
+- Evaluation metrics appropriate to the task.
+- Baseline comparison.
+- Feature schema and preprocessing compatibility.
+- Artifact location and availability.
+- Last successful training or validation.
+- Deployment or activation status.
+
+For forecasting, use appropriate time-series metrics and time-based validation.
+
+For classification, use appropriate metrics such as precision, recall, F1 and ROC-AUC when applicable, with class balance and threshold considerations.
+
+For regression, use appropriate metrics such as MAE and RMSE, with an explanation of units.
+
+Do not compare metrics calculated on incompatible datasets as if they were equivalent.
+
+Never allow an uploaded artifact to become the active production model without validation and compatibility checks.
+
+Administration and audit
+
+Implement, as appropriate to the existing architecture:
+
+- Secure authentication.
+- Role-based authorization.
+- User management.
+- Import and refresh history.
+- Model-version history.
+- Administrative audit logs.
+- Configuration checks.
+- Error monitoring.
+- Backup and restore procedures.
+
+Only show features that have actually been implemented and are backed by the application.
+
+---
+
+4. UI/UX Design System
+
+Create a consistent visual language for the complete application.
+
+Visual direction
+
+Use a modern agricultural technology aesthetic:
+
+- Forest green for primary actions.
+- Light green and muted teal for supporting accents.
+- Warm cream or off-white backgrounds.
+- White content cards.
+- Dark, readable text.
+- Consistent spacing, typography, border radius and iconography.
+- Charts with readable legends and accessible contrast.
+
+Avoid excessive gradients, decorative animations, tiny text, too many cards and unnecessary dashboard clutter.
+
+The UI should look professional enough for a college evaluation and remain practical for everyday farmers.
+
+Responsive behavior
+
+Support:
+
+- Entry-level Android phones.
+- Small and large mobile screens.
+- Tablets.
+- Laptop and desktop browsers.
+
+Use mobile-first layouts, responsive tables or table-to-card alternatives where appropriate, appropriately sized touch targets and layouts that do not overflow horizontally.
+
+Accessibility and usability
+
+Implement:
+
+- Semantic HTML.
+- Keyboard navigation.
+- Visible focus states.
+- Form labels and useful validation.
+- Accessible color contrast.
+- Icons accompanied by understandable text where needed.
+- Readable chart labels.
+- Screen-reader-friendly status messages.
+- Reduced-motion support where appropriate.
+
+Tamil and English
+
+Provide a functioning Tamil/English language switcher.
+
+Translate interface labels, navigation, buttons, form errors, instructions and key status messages.
+
+Use appropriate Tamil Unicode fonts and verify text rendering on mobile.
+
+Avoid machine-translated or nonsensical agricultural wording. Maintain a centralized translation dictionary so that both languages remain consistent.
+
+Persist the selected language where appropriate.
+
+UI states
+
+For every important page and action, implement:
+
+- Initial state.
+- Loading state.
+- Successful state.
+- Empty state.
+- Validation error.
+- Server error.
+- Unavailable data or model state.
+- Stale-data warning.
+
+Do not leave buttons decorative or make controls appear functional when they have no backend behavior.
+
+---
+
+5. Backend and Database Integration
+
+Preserve the Flask architecture where practical and organize code into understandable modules.
+
+Ensure that:
+
+- Each important UI action is connected to the correct route or API.
+- Request and response formats are consistent.
+- Inputs are validated on the server, not just in JavaScript.
+- Database operations use safe parameterized queries or appropriate ORM methods.
+- Long-running training tasks do not unnecessarily block normal requests.
+- Database errors are handled safely.
+- API responses return useful error messages without revealing sensitive internals.
+- Data updates are transactional where appropriate.
+- Existing database records are preserved during schema changes.
+
+Use migrations or a documented upgrade procedure when modifying an existing schema. Do not delete a user's database just to make initialization easier.
+
+Add pagination or bounded result sizes to large data tables.
+
+Ensure that displayed charts and summary numbers are generated from actual backend data rather than hardcoded sample arrays.
+
+---
+
+6. Real Data and External Integrations
+
+Design integrations so the core application can run locally even when external services are not configured.
+
+For each data provider, document:
+
+- Required configuration.
+- Authentication method.
+- Supported data fields.
+- Request limits and failure behavior.
+- Data source and attribution requirements.
+- Last successful update.
+- Retry strategy.
+- Data freshness policy.
+
+Use official or otherwise trustworthy sources where possible, including configured government market-data services when suitable.
+
+Do not assume a particular API endpoint, resource identifier, access permission or response schema without verifying it.
+
+Validate external responses before saving data.
+
+Normalize units and commodity identifiers carefully, and preserve source timestamps.
+
+Distinguish clearly between:
+
+1. Verified external data.
+2. Imported data with known provenance.
+3. User-entered estimates.
+4. Synthetic demonstration data.
+
+If an API is unavailable, preserve the last valid dataset when appropriate and display its age. Never silently replace failed live data with sample data.
+
+Provide a clearly labeled demo mode so the college presentation can run without API credentials.
+
+---
+
+7. Machine Learning: Training, Evaluation and Inference
+
+Inspect all existing ML scripts before changing them.
+
+Implement a repeatable pipeline for each supported task:
+
+1. Validate the input dataset.
+2. Check required columns and units.
+3. Handle missing values and duplicates.
+4. Verify chronological order for time-series tasks.
+5. Prevent target leakage.
+6. Split data appropriately.
+7. Establish a baseline.
+8. Train the model.
+9. Evaluate on held-out data.
+10. Save the complete preprocessing and model pipeline.
+11. Record the model version, features, training period and metrics.
+12. Load and validate the artifact during inference.
+
+Where appropriate, persist preprocessing and the estimator together using a scikit-learn pipeline and joblib.
+
+Never assume that a ".pkl" file exists merely because the application expects one.
+
+Add checks for missing, corrupted or incompatible model artifacts.
+
+Use reproducible random seeds where relevant, sensible training defaults and clear CLI help messages.
+
+Document the data required to train each model. If the available dataset is insufficient, explain the limitation and provide a safe demonstration path without presenting demonstration results as validated predictions.
+
+---
+
+8. Alerts, Reminders and Automation
+
+Implement alerts only for events that the system can reliably detect.
+
+Potential alerts include:
+
+- A verified price change crossing a configured threshold.
+- A validated risk model producing a qualifying result.
+- A market-data refresh failure.
+- A stale dataset.
+- An unavailable or invalid model.
+
+Use configurable thresholds and explain why each alert was triggered.
+
+Prevent duplicate notifications, log delivery outcomes and support retries where safe.
+
+If SMS, email or messaging integrations are optional, require the appropriate credentials, recipient consent and configuration.
+
+Do not claim alerts are being delivered unless a real delivery provider confirms the result.
+
+If background scheduling is required, use a suitable scheduler or worker and document how to run it. Do not assume that a background process is running just because a schedule exists in code.
+
+---
+
+9. Security, Privacy and Reliability
+
+Review and implement appropriate safeguards:
+
+- Secure password hashing if passwords are stored.
+- Session security and logout.
+- Server-side role checks for every protected operation.
+- CSRF protection for state-changing browser forms.
+- Input validation and safe output escaping.
+- Secure file-upload validation and size limits.
+- Safe handling of file paths.
+- Rate limiting for sensitive endpoints where appropriate.
+- Environment-based secrets.
+- No committed API keys or passwords.
+- Safe error handling and logging.
+- Database backups and restore guidance.
+- Data minimization and appropriate retention.
+- Protection of farmer information.
+- HTTPS configuration for deployment.
+- Dependency and configuration checks.
+
+Do not rely on hiding an admin link in the UI as a security measure. Protect the actual routes and backend actions.
+
+Never expose private farmer records to other farmers.
+
+Avoid collecting personal information that is not needed for a defined feature.
+
+---
+
+10. Testing and Quality Assurance
+
+Write or improve automated tests for the complete application.
+
+Backend tests
+
+Cover:
+
+- Application startup.
+- Database initialization.
+- Authentication and authorization.
+- Input validation.
+- Market-data import and duplicate handling.
+- Missing and stale data.
+- Profit and break-even calculations.
+- Model artifact missing or incompatible.
+- Forecast and classification response validation.
+- API failures and timeouts.
+- Alert threshold logic.
+- Data persistence.
+- Invalid file uploads.
+- Unauthorized admin actions.
+
+UI and integration tests
+
+Verify that:
+
+- Farmer navigation works.
+- Admin navigation works for authorized users.
+- Forms validate correctly.
+- Dashboard metrics come from backend data.
+- Charts use real response values.
+- Tamil/English switching works.
+- Mobile layouts remain usable.
+- Loading, empty and error states appear correctly.
+- Important actions persist their results.
+- Unavailable integrations fail gracefully.
+
+Use unit tests for calculations, Flask test clients for routes and suitable integration or browser tests where practical.
+
+Run the existing test suite before and after implementation. Fix regressions rather than deleting failing tests or weakening assertions.
+
+Provide exact commands for running tests.
+
+---
+
+11. Deployment and Local Demonstration
+
+Keep local Windows development in VS Code straightforward.
+
+Document:
+
+- Supported Python version.
+- Virtual environment creation and activation.
+- Dependency installation.
+- Environment-file setup.
+- Database initialization or migration.
+- Optional demo-data import.
+- Application startup.
+- Test execution.
+- ML training and evaluation.
+- Model artifact locations.
+- Troubleshooting common errors.
+
+Ensure that the application can be demonstrated without paid services.
+
+Keep development configuration separate from production configuration. Do not use Flask's development server as the production hosting solution.
+
+If cloud deployment is optional, describe a free or low-cost path only after checking its current limits and requirements. Never promise that hosting is free without verifying the applicable conditions.
+
+---
+
+12. Documentation and College Presentation
+
+Update the README with:
+
+- Project overview.
+- Problem statement and intended users.
+- Architecture diagram.
+- Feature list.
+- Screens and navigation.
+- Technology stack.
+- Database structure.
+- Data-source details.
+- ML workflow.
+- Setup instructions.
+- Environment configuration.
+- Test instructions.
+- Known limitations.
+- Deployment guidance.
+- Security considerations.
+
+Create a clear architecture flow:
+
+Farmer/Admin UI → Flask routes and validation → Services → Database and configured data providers → ML inference → Results, charts and alerts.
+
+Document which features are implemented, which require credentials and which remain future work.
+
+Do not label a feature complete unless it has been implemented and tested.
+
+---
+
+13. Definition of Done
+
+The project is complete only when the following conditions are met:
+
+- [ ] Existing project inspected and baseline tests recorded.
+- [ ] Farmer and admin portals have distinct, appropriate navigation.
+- [ ] Responsive layouts work on mobile and desktop.
+- [ ] Tamil and English switching works for key flows.
+- [ ] Farmer actions connect to functioning backend operations.
+- [ ] Admin actions are protected by server-side permissions.
+- [ ] Market data has clear provenance and freshness information.
+- [ ] Demo data is visibly distinguished from real data.
+- [ ] Financial calculations are tested with known examples.
+- [ ] ML inference uses validated artifacts and compatible preprocessing.
+- [ ] Missing data and models produce honest fallback messages.
+- [ ] External service failures are handled safely.
+- [ ] Security checks and important regression tests pass.
+- [ ] README and setup instructions match the actual implementation.
+- [ ] The app can run locally without paid credentials.
+- [ ] Remaining limitations are documented honestly.
+
+Do not claim that every test passes until the test results confirm it.
+
+---
+
+14. Required Working Method and Final Deliverables
+
+Follow this sequence:
+
+Phase 1 — Audit: Inspect the complete repository, identify current functionality, reproduce failures and report a prioritized issue list.
+
+Phase 2 — Plan: Propose a practical implementation order, identifying dependencies and avoiding unnecessary rewrites.
+
+Phase 3 — UI and UX: Improve farmer and admin interfaces, shared components, responsive layouts, language support and status states.
+
+Phase 4 — Integration: Connect the interface to Flask routes, services, database queries, data sources and ML inference.
+
+Phase 5 — Data and ML: Validate data handling, train and evaluate models when suitable data exists, and integrate only compatible artifacts.
+
+Phase 6 — Security: Apply authentication, authorization, validation, secret management and other relevant safeguards.
+
+Phase 7 — Testing: Run tests, fix failures and verify critical workflows.
+
+Phase 8 — Documentation: Update setup instructions, architecture, model details, limitations and deployment guidance.
+
+At the end, provide:
+
+1. A summary of the original issues found.
+2. A list of files changed and why.
+3. A list of completed features.
+4. A list of features that still need credentials, real data or external services.
+5. Test commands and actual test results.
+6. Screenshots or a walkthrough of the farmer and admin portals, if the environment supports them.
+7. Exact Windows/VS Code commands to run the final project.
+8. Any remaining known issues and recommended next steps.
+
+Important execution instruction: Do not merely return suggestions, mockups, code snippets or a plan. When repository editing tools are available, implement the changes directly in the existing project, run the application and tests, and deliver the updated project files. If a step cannot be completed because data, credentials, tools or permissions are unavailable, explain the limitation and complete all independent work that can be done safely.
+
+Final quality goal: AgriShield should be a practical, transparent and trustworthy agricultural decision-support prototype that a farmer can understand, an administrator can operate, and a college evaluator can verify. Prioritize usefulness, correctness, accessibility and reliability over unnecessary features or decorative complexity.

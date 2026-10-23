@@ -1,0 +1,7 @@
+Model Type,Algorithm,Metric 1 (MAE),Metric 2 (RMSE),Metric 3 (R²/F1),Selected
+Regression,Linear Regression (Baseline),310.45,435.20,0.862,No
+Regression,Random Forest Regressor,116.21,345.99,0.984,No
+Regression,Gradient Boosting Regressor,225.80,342.10,0.915,Yes
+Classification,Logistic Regression (Baseline),Acc: 81.2%,Rec: 68.4%,F1: 0.695,No
+Classification,Random Forest Classifier,Acc: 95.1%,Rec: 24.2%,F1: 0.308,No
+Classification,Gradient Boosting Classifier,Acc: 88.5%,Rec: 81.0%,F1: 0.812,Yes
