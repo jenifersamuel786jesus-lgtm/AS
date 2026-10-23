@@ -2,6 +2,28 @@ export type Language = 'en' | 'ta';
 
 export type UserRole = 'farmer' | 'fpo' | 'admin';
 
+export interface UserProfile {
+  id: string;
+  name: string;
+  nameTa: string;
+  role: UserRole;
+  identifier: string;
+  district: string;
+  districtTa: string;
+  state: string;
+  phone?: string;
+  email?: string;
+  landArea?: number;
+  primaryCrop?: string;
+  primaryCropTa?: string;
+  designation?: string;
+  designationTa?: string;
+  department?: string;
+  departmentTa?: string;
+  clearanceLevel?: string;
+  lastLogin?: string;
+}
+
 export interface Crop {
   id: string;
   name: string;

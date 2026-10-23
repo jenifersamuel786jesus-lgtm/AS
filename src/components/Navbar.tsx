@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Sprout,
   ShieldAlert,
@@ -9,8 +9,14 @@ import {
   Building2,
   ShieldCheck,
   CheckCircle2,
+  LogIn,
+  LogOut,
+  ChevronDown,
+  User,
+  Shield,
+  Layers,
 } from 'lucide-react';
-import { Language, UserRole } from '../types';
+import { Language, UserRole, UserProfile } from '../types';
 import { t } from '../utils/translations';
 
 interface NavbarProps {
@@ -20,6 +26,9 @@ interface NavbarProps {
   setUserRole: (role: UserRole) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  currentUser: UserProfile | null;
+  onOpenLogin: (role?: 'farmer' | 'admin', message?: string) => void;
+  onLogout: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -29,7 +38,29 @@ export const Navbar: React.FC<NavbarProps> = ({
   setUserRole,
   activeTab,
   setActiveTab,
+  currentUser,
+  onOpenLogin,
+  onLogout,
 }) => {
+  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  const handleRoleClick = (role: UserRole) => {
+    if (role === 'admin') {
+      if (currentUser?.role === 'admin') {
+        setUserRole('admin');
+      } else {
+        onOpenLogin(
+          'admin',
+          language === 'ta'
+            ? 'அதிகாரி மற்றும் MLOps போர்ட்டலை அணுக வேளாண் வணிக அலுவலர் சான்றுகளுடன் உள்நுழையவும்.'
+            : 'Access to Admin Portal & MLOps Telemetry requires Agricultural Officer authorization.'
+        );
+      }
+    } else {
+      setUserRole(role);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 bg-stone-900 text-white shadow-md border-b border-stone-800">
       {/* Top Utility Ticker */}
@@ -63,7 +94,12 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap justify-between items-center gap-3">
         {/* Brand */}
         <button
-          onClick={() => setActiveTab('home')}
+          onClick={() => {
+            if (userRole === 'admin' && currentUser?.role !== 'admin') {
+              setUserRole('farmer');
+            }
+            setActiveTab('home');
+          }}
           className="flex items-center space-x-3 group text-left focus:outline-none"
         >
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-700 to-green-500 flex items-center justify-center shadow-lg shadow-emerald-900/40 text-white group-hover:scale-105 transition">
@@ -86,10 +122,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </button>
 
-        {/* Center / Role Navigation */}
+        {/* Center / Role Switcher Tabs */}
         <div className="flex items-center space-x-1 bg-stone-800/80 p-1 rounded-xl border border-stone-700">
           <button
-            onClick={() => setUserRole('farmer')}
+            onClick={() => handleRoleClick('farmer')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition ${
               userRole === 'farmer'
                 ? 'bg-emerald-600 text-white shadow-sm'
@@ -100,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>{t(language, 'farmerPortal')}</span>
           </button>
           <button
-            onClick={() => setUserRole('fpo')}
+            onClick={() => handleRoleClick('fpo')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition ${
               userRole === 'fpo'
                 ? 'bg-emerald-600 text-white shadow-sm'
@@ -111,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>{t(language, 'fpoPortal')}</span>
           </button>
           <button
-            onClick={() => setUserRole('admin')}
+            onClick={() => handleRoleClick('admin')}
             className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition ${
               userRole === 'admin'
                 ? 'bg-emerald-600 text-white shadow-sm'
@@ -120,14 +156,145 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <ShieldCheck className="w-3.5 h-3.5" />
             <span>{t(language, 'adminPortal')}</span>
+            {currentUser?.role !== 'admin' && (
+              <span className="text-[9px] bg-stone-700 text-amber-300 px-1 py-0.2 rounded font-mono">
+                🔒
+              </span>
+            )}
           </button>
         </div>
 
-        {/* Right Utility: Language Toggle */}
-        <div className="flex items-center space-x-2">
+        {/* Right Section: User Profile & Language Controls */}
+        <div className="flex items-center space-x-2.5">
+          {/* User Account Capsule */}
+          {currentUser ? (
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
+                className="flex items-center space-x-2 bg-stone-800 hover:bg-stone-700/90 text-stone-200 border border-stone-700 px-2.5 py-1.5 rounded-xl transition text-xs font-medium"
+              >
+                <div
+                  className={`w-6 h-6 rounded-lg flex items-center justify-center text-white text-[11px] font-bold ${
+                    currentUser.role === 'admin'
+                      ? 'bg-amber-600'
+                      : currentUser.role === 'fpo'
+                      ? 'bg-blue-600'
+                      : 'bg-emerald-600'
+                  }`}
+                >
+                  {currentUser.role === 'admin' ? (
+                    <Shield className="w-3.5 h-3.5" />
+                  ) : (
+                    <User className="w-3.5 h-3.5" />
+                  )}
+                </div>
+                <div className="text-left hidden sm:block">
+                  <div className="text-xs font-bold leading-tight text-white flex items-center space-x-1">
+                    <span>
+                      {language === 'ta' ? currentUser.nameTa : currentUser.name}
+                    </span>
+                    <span
+                      className={`text-[9px] font-semibold uppercase px-1 py-0.1 rounded ${
+                        currentUser.role === 'admin'
+                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                          : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                      }`}
+                    >
+                      {currentUser.role}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-stone-400">
+                    {language === 'ta' ? currentUser.districtTa : currentUser.district}
+                  </div>
+                </div>
+                <ChevronDown className="w-3.5 h-3.5 text-stone-400 ml-1" />
+              </button>
+
+              {/* Profile Dropdown Menu */}
+              {profileDropdownOpen && (
+                <>
+                  <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setProfileDropdownOpen(false)}
+                  />
+                  <div className="absolute right-0 mt-2 w-72 bg-white text-stone-900 rounded-xl shadow-2xl border border-stone-200 p-3 z-50 text-xs animate-fadeIn">
+                    <div className="pb-2.5 border-b border-stone-100">
+                      <p className="font-bold text-stone-900 text-sm">
+                        {language === 'ta' ? currentUser.nameTa : currentUser.name}
+                      </p>
+                      <p className="text-[11px] text-stone-500">
+                        {currentUser.identifier}
+                      </p>
+                      <p className="text-[11px] text-emerald-700 font-semibold mt-1">
+                        {currentUser.role === 'admin'
+                          ? (language === 'ta' ? currentUser.designationTa : currentUser.designation)
+                          : `${language === 'ta' ? currentUser.districtTa : currentUser.district} • ${currentUser.landArea} ${language === 'ta' ? 'ஏக்கர்' : 'Acres'} (${language === 'ta' ? currentUser.primaryCropTa : currentUser.primaryCrop})`}
+                      </p>
+                    </div>
+
+                    <div className="py-2 space-y-1">
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          onOpenLogin(currentUser.role === 'admin' ? 'farmer' : 'admin');
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-stone-100 flex items-center justify-between text-stone-700 font-medium transition"
+                      >
+                        <span className="flex items-center space-x-2">
+                          <Layers className="w-3.5 h-3.5 text-stone-500" />
+                          <span>
+                            {currentUser.role === 'admin'
+                              ? (language === 'ta' ? 'விவசாயி கணக்கிற்கு மாற்றுக' : 'Switch to Farmer Login')
+                              : (language === 'ta' ? 'அதிகாரி கணக்கிற்கு மாற்றுக' : 'Switch to Admin Login')}
+                          </span>
+                        </span>
+                      </button>
+
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          onOpenLogin('farmer');
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-stone-100 flex items-center space-x-2 text-stone-700 font-medium transition"
+                      >
+                        <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>
+                          {language === 'ta' ? 'சுயவிவரங்களை மாற்று' : 'Switch User / Demo Profiles'}
+                        </span>
+                      </button>
+                    </div>
+
+                    <div className="pt-2 border-t border-stone-100">
+                      <button
+                        onClick={() => {
+                          setProfileDropdownOpen(false);
+                          onLogout();
+                        }}
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-rose-50 text-rose-600 font-semibold flex items-center space-x-2 transition"
+                      >
+                        <LogOut className="w-3.5 h-3.5" />
+                        <span>{language === 'ta' ? 'வெளியேறு (Logout)' : 'Sign Out'}</span>
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => onOpenLogin('farmer')}
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition"
+            >
+              <LogIn className="w-3.5 h-3.5" />
+              <span>{language === 'ta' ? 'உள்நுழைக' : 'Sign In'}</span>
+            </button>
+          )}
+
+          {/* Language Toggle */}
           <button
             onClick={() => setLanguage(language === 'en' ? 'ta' : 'en')}
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-800/60 hover:bg-emerald-700 text-emerald-100 border border-emerald-600/50 transition"
+            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-800/60 hover:bg-emerald-700 text-emerald-100 border border-emerald-600/50 transition"
             title="Toggle Tamil / English"
           >
             <Globe2 className="w-3.5 h-3.5 text-emerald-300" />
